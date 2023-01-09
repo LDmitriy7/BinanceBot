@@ -8,12 +8,27 @@ HEADERS = {
     'User-Agent': USER_AGENT,
 }
 
-BODY = {'page': 1, 'rows': 1, 'payTypes': ['TinkoffNew'], 'asset': 'USDT', 'fiat': 'RUB', 'tradeType': 'BUY'}
+BUY_JSON = {'page': 1, 'rows': 1, 'payTypes': ['TinkoffNew'], 'asset': 'USDT', 'fiat': 'RUB', 'tradeType': 'BUY'}
+SELL_JSON = {'page': 1, 'rows': 1, 'payTypes': ['KaspiBank'], 'asset': 'USDT', 'fiat': 'KZT', 'tradeType': 'SELL'}
 
 
-async def get_min_rate() -> float:
-    resp = await client.post(URL, json=BODY, headers=HEADERS)
+async def get_usdt_to_rub_rate() -> float:
+    resp = await client.post(URL, json=BUY_JSON, headers=HEADERS)
     json = resp.json()
     result = json['data']
     prices = [float(i['adv']['price']) for i in result]
     return min(prices)
+
+
+async def get_usdt_to_kzt_rate() -> float:
+    resp = await client.post(URL, json=SELL_JSON, headers=HEADERS)
+    json = resp.json()
+    result = json['data']
+    prices = [float(i['adv']['price']) for i in result]
+    return max(prices)
+
+
+async def get_rub_to_kzt_rate() -> float:
+    usdt_to_rub = await get_usdt_to_rub_rate()
+    usdt_to_kzt = await get_usdt_to_kzt_rate()
+    return usdt_to_kzt / usdt_to_rub

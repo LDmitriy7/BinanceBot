@@ -9,6 +9,7 @@ event = events.Command(commands.START, state='*')
 async def callback(msg: types.Message):
     await states.Start.rate.set()
     await msg.answer(texts.ask_rate)
+    await commands.setup()
 
 
 ENTRY = Handler(event, callback)

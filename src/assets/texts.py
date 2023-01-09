@@ -5,6 +5,10 @@ ask_rate = """
 Я сообщу тебе, когда появятся предложения ниже этого курса.
 """
 
-offer_available = f"""
-<a href="{config.OFFERS_PAGE_URL}">Доступно предложение по курсу {{rate}}</a>
+buy_offer_available = f"""
+<a href="{config.BUY_OFFERS_URL}">Доступно предложение по курсу {{rate}}</a>
+"""
+
+sell_offer_available = f"""
+<a href="{config.SELL_OFFERS_URL}">Доступно предложение по курсу {{rate}}</a>
 """
